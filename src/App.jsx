@@ -3,6 +3,19 @@ import { useState, useEffect } from "react";
 function App() {
   let [isLoading, setIsLoading] = useState(true);
   let [data, setData] = useState([]);
+  const [img, setImg] = useState("");
+  const imgChange = (e) => {
+    console.log(e.target.value);
+    fetch(e.target.value)
+      .then(response => response.json())
+      .then(json => 
+        {
+          console.log(json.sprites.front_default)
+          setImg(json.sprites.front_default);
+        }
+      )
+  }
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20000")
     .then((response) => response.json())
@@ -21,13 +34,13 @@ function App() {
           {isLoading ? (
             <span>Loading...</span>
           ) : (
-            <select onChange= {}>
+            <select onChange={imgChange}>   
               {data.map((pokemon) => (
-                <option value={pokemon.url}>{pokemon.name}</option>
+                <option key={pokemon.name} value={pokemon.url}>{pokemon.name}</option>
               ))}
             </select>
           )}
-          <img src="" alt="pokemon" />
+          <img src={img} alt="pokemon" />
       </div>
     </>
   );
